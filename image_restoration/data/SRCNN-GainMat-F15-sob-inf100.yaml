@@ -1,0 +1,42 @@
+name: SRCNN-GainMat-F15-sob-inf100
+datasets:
+  type: PairedImageDataset
+  train:
+    dataset_root: /mnt/ssd/datasets/GainMat-F15-sob-inf100
+    dataroot_lq: train/lq
+    dataroot_gt: train/gt
+
+  val:
+    dataset_root: /mnt/ssd/datasets/GainMat-F15-sob-inf100
+    dataroot_lq: val/lq
+    dataroot_gt: val/gt
+
+model:
+  type: SRCNN
+  img_channel: 1
+  strides: [!!python/tuple [1, 1], !!python/tuple [1, 1], !!python/tuple [1, 1]]
+  kernel_sizes: [!!python/tuple [27, 27], !!python/tuple [15, 15], !!python/tuple [9, 9]]
+  c_expand: 64
+
+imgsz:
+  height: 960
+  width: 240
+
+optimizer:
+  name: AdamW
+  args:
+    lr: !!python/float 1e-5
+
+scheduler:
+  name: CosineAnnealingLR
+  args:
+    last_epoch: -1
+    T_max: 200000
+    eta_min: !!python/float 1e-7
+
+criterion:
+  name: MSELoss
+  args:
+    reduction: mean
+
+
